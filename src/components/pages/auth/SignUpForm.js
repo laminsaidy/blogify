@@ -5,7 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 
 
-const SignupForm = () => {
+const SignUpForm = () => {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -71,4 +71,4 @@ const SignupForm = () => {
     );
 }
 
-export default SignupForm;
+export default SignUpForm;
