@@ -1,30 +1,22 @@
 import React, { useContext } from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+import { CurrentUserContext } from "../App";
 import logo from "../assets/Logo.png";
 import styles from "../styles/NavBar.module.css";
-import { NavLink } from "react-router-dom";
-import { CurrentUserContext } from "../App"; // Import the context
-
-
 
 const NavBar = () => {
-  const currentUser = useContext(CurrentUserContext); // Ensure this line is placed after importing useContext
+  // Access the current user from context
+  const currentUser = useContext(CurrentUserContext);
 
-  const loggedInIcons = <>{currentUser?.username}</>;
+  // Define icons based on user's login state
+  const loggedInIcons = <span>Hello, {currentUser?.username}</span>;
   const loggedOutIcons = (
     <>
-      <NavLink
-        className={styles.NavLink}
-        activeClassName={styles.Active}
-        to="/signin"
-      >
+      <NavLink className={styles.NavLink} activeClassName={styles.Active} to="/signin">
         <i className="fas fa-sign-in-alt"></i>Sign in
       </NavLink>
-      <NavLink
-        to="/signup"
-        className={styles.NavLink}
-        activeClassName={styles.Active}
-      >
+      <NavLink to="/signup" className={styles.NavLink} activeClassName={styles.Active}>
         <i className="fas fa-user-plus"></i>Sign up
       </NavLink>
     </>
@@ -38,19 +30,13 @@ const NavBar = () => {
             <img src={logo} alt="logo" height="45" />
           </Navbar.Brand>
         </NavLink>
-
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto text-left">
-            <NavLink
-              exact
-              className={styles.NavLink}
-              activeClassName={styles.Active}
-              to="/"
-            >
+            <NavLink exact className={styles.NavLink} activeClassName={styles.Active} to="/">
               <i className="fas fa-home"></i>Home
             </NavLink>
-
+            {/* Render logged-in or logged-out icons based on currentUser */}
             {currentUser ? loggedInIcons : loggedOutIcons}
           </Nav>
         </Navbar.Collapse>
