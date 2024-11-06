@@ -124,6 +124,8 @@ import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
 import { useSetCurrentUser } from "../../context/CurrentUserContext";
+import signInImage from "../../images/cat-Square.jpg";
+
 
 function SignInForm() {
   const setCurrentUser = useSetCurrentUser();
@@ -220,7 +222,8 @@ function SignInForm() {
       >
         <Image
           className={`${appStyles.FillerImage}`}
-          src={"https://codeinstitute.s3.amazonaws.com/AdvancedReact/hero.jpg"}
+          src={signInImage}  // Use the imported image here
+          alt="Sign Up Illustration"
         />
       </Col>
     </Row>

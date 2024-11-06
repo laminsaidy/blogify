@@ -6,7 +6,7 @@
     border: 1px solid #f0f1f9;
     box-sizing: border-box;
     border-radius: 2px;
-    color: #7177a1;
+    /* color: #7177a1; */
     text-align: center;
     padding: 10px;
   }
@@ -37,10 +37,4 @@
     padding: 30px 10px;
   }
   
-  .SignInCol {
-    height: 320px;
-  }
   
-  .SignUpCol {
-    height: 375px;
-  }

@@ -4,10 +4,14 @@ import { NavLink } from "react-router-dom";
 import { CurrentUserContext } from "../App";
 import logo from "../assets/Logo.png";
 import styles from "../styles/NavBar.module.css";
+import useToggle from "../hooks/useToggle"; // Import custom hook
 
 const NavBar = () => {
   // Access the current user from context
   const currentUser = useContext(CurrentUserContext);
+
+  // Toggle state for the burger menu
+  const [isOpen, toggleMenu] = useToggle();
 
   // Define icons based on user's login state
   const loggedInIcons = <span>Hello, {currentUser?.username}</span>;
@@ -17,8 +21,7 @@ const NavBar = () => {
         <i className="fas fa-sign-in-alt"></i>Sign in
       </NavLink>
       <NavLink to="/signup" className={styles.NavLink} activeClassName={styles.Active}>
-        <i className="fas fa-user-plus"></i>Sign up
-      </NavLink>
+        <i className="fas fa-user-plus"></i>Register</NavLink>
     </>
   );
 
@@ -30,8 +33,12 @@ const NavBar = () => {
             <img src={logo} alt="logo" height="45" />
           </Navbar.Brand>
         </NavLink>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Toggle
+          aria-controls="basic-navbar-nav"
+          aria-expanded={isOpen} // Indicate toggle state
+          onClick={toggleMenu} // Toggle menu on click
+        />
+        <Navbar.Collapse id="basic-navbar-nav" className={isOpen ? 'show' : ''}>
           <Nav className="ml-auto text-left">
             <NavLink exact className={styles.NavLink} activeClassName={styles.Active} to="/">
               <i className="fas fa-home"></i>Home
