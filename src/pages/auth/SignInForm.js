@@ -222,7 +222,7 @@ function SignInForm() {
       >
         <Image
           className={`${appStyles.FillerImage}`}
-          src={signInImage}  // Use the imported image here
+          src={signInImage}  
           alt="Sign Up Illustration"
         />
       </Col>

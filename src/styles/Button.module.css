@@ -16,7 +16,7 @@
   }
   
   .Button:hover:active {
-    background-color: #2182b27b !important;
+    background-color: #2142b2 !important;
   }
   
   .Button:active {
@@ -63,7 +63,4 @@
     color: #242a3d;
   }
   
-  .Bright {
-    background-color: #2ed9ff;
-    color: #2142b2;
-  }
+  

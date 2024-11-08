@@ -1,6 +1,6 @@
 .App {
   font-family: "DM Sans", sans-serif;
-  background-color: #f8f8f8;
+  background-color: #f8f8f8a7;
   min-height: 100vh;
 }
 .Main {
@@ -13,8 +13,4 @@
 a {
   transition: color ease-in-out 0.3s;
 }
-
-a:hover {
-  text-decoration: none;
-  background-color: #72a7b3;
-}
+ 
