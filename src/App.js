@@ -1,33 +1,37 @@
+import { createContext, useEffect, useState, useCallback } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import axios from 'axios';
-import { createContext, useEffect, useState } from 'react';
-import "./api/axiosDefaults";
-import styles from "./App.module.css";
-import NavBar from "./components/NavBar";
-import Container from "react-bootstrap/Container";
-import { Route, Switch } from "react-router-dom";
-import SignUpForm from "./pages/auth/SignUpForm";
-import SignInForm from "./pages/auth/SignInForm"; 
 
-// Creating the contexts for current user and function to set it
+import "./api/axiosDefaults";
+import styles from './App.module.css';
+import NavBar from './components/NavBar';
+import Container from 'react-bootstrap/Container';
+import SignUpForm from './pages/auth/SignUpForm';
+import SignInForm from './pages/auth/SignInForm';
+import PostCreateForm from './posts/PostCreateForm';
+import PostPage from './posts/PostPage';
+
+// Contexts for current user and the function to set it
 export const CurrentUserContext = createContext(null);
 export const SetCurrentUserContext = createContext(null);
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
 
-  // Fetch the current user data on component mount
-  const handleMount = async () => {
+  // Fetches the current user data on mount
+  const fetchCurrentUser = useCallback(async () => {
     try {
       const { data } = await axios.get("/dj-rest-auth/user/");
       setCurrentUser(data);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.error("Error fetching current user:", error);
     }
-  };
-
-  useEffect(() => {
-    handleMount();
   }, []);
+
+  // useEffect for initial mount
+  useEffect(() => {
+    fetchCurrentUser();
+  }, [fetchCurrentUser]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -39,6 +43,8 @@ function App() {
               <Route exact path="/" render={() => <h1>Home Page</h1>} />
               <Route exact path="/signin" component={SignInForm} />
               <Route exact path="/signup" component={SignUpForm} />
+              <Route exact path="/posts/create" component={PostCreateForm} />
+              <Route exact path="/posts/:id" component={PostPage} />
               <Route render={() => <p>Page not found!</p>} />
             </Switch>
           </Container>
