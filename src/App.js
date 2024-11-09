@@ -10,6 +10,9 @@ import SignUpForm from './pages/auth/SignUpForm';
 import SignInForm from './pages/auth/SignInForm';
 import PostCreateForm from './posts/PostCreateForm';
 import PostPage from './posts/PostPage';
+import PostsPage from './posts/PostsPage';
+
+
 
 // Contexts for current user and the function to set it
 export const CurrentUserContext = createContext(null);
