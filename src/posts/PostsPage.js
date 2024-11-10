@@ -1,68 +1,70 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Col, Row, Container } from "react-bootstrap";
-import { useLocation } from "react-router";
-
-import Post from "./Post";
-import Asset from "../components/ImageAsset";
-import { axiosReq } from "../api/axiosDefaults";
-
+import { Col, Row, Container, Spinner, Alert } from "react-bootstrap"; 
 import appStyles from "../App.module.css";
-import NoResults from "../assets/no-results.png";
+import { useParams } from "react-router";
+import { axiosReq } from "../api/axiosDefaults";
+import Post from "./PostItem";
 
-function PostsPage({ message, filter = "" }) {
-  const [posts, setPosts] = useState({ results: [] });
-  const [loading, setLoading] = useState(true);
-  const { pathname } = useLocation();
+function PostPage() {
+  const { id } = useParams();
+  const [post, setPost] = useState({ results: [] });
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
 
-  const fetchPosts = useCallback(async () => {
+  // Fetch the post data using useEffect
+  const fetchPost = useCallback(async () => {
+    setLoading(true); // Start loading
+    setError(null); // Clear previous errors
     try {
-      const { data } = await axiosReq.get(`/posts/?${filter}`);
-      setPosts(data);
+      const [{ data: post }] = await Promise.all([axiosReq.get(`/posts/${id}`)]);
+      setPost({ results: [post] });
     } catch (err) {
-      console.error("Error fetching posts:", err);
+      setError("Error fetching post. Please try again later.");
+      console.error("Error fetching post:", err);
     } finally {
-      setLoading(false);
+      setLoading(false); // End loading
     }
-  }, [filter]);
+  }, [id]);
 
+  // Trigger post fetching when the component mounts or id changes
   useEffect(() => {
-    setLoading(true);
-    fetchPosts();
-  }, [fetchPosts, pathname]);
+    fetchPost();
+  }, [fetchPost]);
 
-  const renderContent = () => {
+  // Conditional rendering for loading, error, and post content
+  const renderPostContent = () => {
     if (loading) {
       return (
-        <Container className={appStyles.Content}>
-          <Asset spinner />
-        </Container>
+        <div className="d-flex justify-content-center">
+          <Spinner animation="border" />
+          <span className="ml-2">Loading...</span>
+        </div>
       );
     }
 
-    if (posts.results.length === 0) {
-      return (
-        <Container className={appStyles.Content}>
-          <Asset src={NoResults} message={message} />
-        </Container>
-      );
+    if (error) {
+      return <Alert variant="danger">{error}</Alert>;
     }
 
-    return posts.results.map((post) => (
-      <Post key={post.id} {...post} setPosts={setPosts} />
-    ));
+    if (!post.results[0]) {
+      return <Alert variant="warning">Post not found.</Alert>;
+    }
+
+    return <Post {...post.results[0]} setPosts={setPost} postPage />;
   };
 
   return (
     <Row className="h-100">
       <Col className="py-2 p-0 p-lg-2" lg={8}>
-        <p>Popular profiles mobile</p>
-        {renderContent()}
+        <p>Popular profiles for mobile</p>
+        {renderPostContent()}
+        <Container className={appStyles.Content}>Comments</Container>
       </Col>
-      <Col md={4} className="d-none d-lg-block p-0 p-lg-2">
-        <p>Popular profiles for desktop</p>
+      <Col lg={4} className="d-none d-lg-block p-0 p-lg-2">
+        Popular profiles for desktop
       </Col>
     </Row>
   );
 }
 
-export default PostsPage;
+export default PostPage;

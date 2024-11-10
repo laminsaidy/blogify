@@ -4,7 +4,7 @@ import appStyles from "../App.module.css";
 import searchBarStyles from "../styles/SearchBar.module.css"; 
 import { useParams } from "react-router";
 import { axiosReq } from "../api/axiosDefaults";
-import Post from "./Post";
+import Post from "./PostItem";
 import { useInfiniteScroll } from "../utilis/Utilis";
 
 function PostPage() {
