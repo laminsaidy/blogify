@@ -8,7 +8,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Image from "react-bootstrap/Image";
 import Container from "react-bootstrap/Container";
-import signUpImage from "../../images/cat-Square.jpg";
+import signUpImage from "../../images/Ooopsy_enhanced.jpg";
 
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";

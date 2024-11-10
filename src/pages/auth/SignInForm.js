@@ -15,7 +15,7 @@ import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
 import { useSetCurrentUser } from "../../context/CurrentUserContext";
-import signInImage from "../../images/cat-Square.jpg";
+import signInImage from "../../images/BloGeekFy_enhanced.jpg";
 
 
 function SignInForm() {

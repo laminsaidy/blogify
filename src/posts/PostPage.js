@@ -3,9 +3,11 @@ import { Col, Row, Container, Form, Button } from "react-bootstrap";
 import appStyles from "../App.module.css";
 import searchBarStyles from "../styles/SearchBar.module.css"; 
 import { useParams } from "react-router";
-import { axiosPrivate } from "../api/axiosDefaults";  // Use axiosPrivate here
+import { axiosPrivate } from "../api/axiosDefaults";
 import Post from "./PostItem";
 import { useInfiniteScroll } from "../utilis/Utilis";
+import CommentCreateForm from "./comments/CommentCreateForm";
+import { useCurrentUser } from "../context/CurrentUserContext";
 
 function PostPage() {
   const { id } = useParams();
@@ -13,11 +15,13 @@ function PostPage() {
   const [query, setQuery] = useState("");
   const [hasMore, setHasMore] = useState(true); 
   const [page, setPage] = useState(1); 
+  const currentUser = useCurrentUser();
+  const profile_image = currentUser?.profile_image;
+  const [comments, setComments] = useState({ results: [] });
 
-  // Fetch posts data using useEffect
   const fetchPost = useCallback(async () => {
     try {
-      const { data } = await axiosPrivate.get(`/posts/${id}?page=${page}`);  // Use axiosPrivate here
+      const { data } = await axiosPrivate.get(`/posts/${id}?page=${page}`);
       setPost((prevPost) => ({
         results: page === 1 ? [data] : [...prevPost.results, data],
       }));
@@ -27,28 +31,43 @@ function PostPage() {
     }
   }, [id, page]);
 
-  // Trigger fetching posts on component mount or page change
+  const fetchComments = useCallback(async () => {
+    try {
+      const { data } = await axiosPrivate.get(`/posts/${id}/comments`);
+      setComments({ results: data });
+    } catch (err) {
+      console.error("Error fetching comments:", err);
+    }
+  }, [id]);
+
   useEffect(() => {
     fetchPost();
-  }, [fetchPost]);
+    fetchComments();
+  }, [fetchPost, fetchComments]);
 
-  // Infinite scroll trigger
   useInfiniteScroll(() => {
     if (hasMore) {
-      setPage((prevPage) => prevPage + 1); // Increment page to load more data
+      setPage((prevPage) => prevPage + 1);
     }
   });
 
-  // Search function to handle query changes
   const handleSearch = (event) => {
     event.preventDefault();
     console.log("Searching for:", query);
-    // Implement actual search functionality if needed
   };
 
   const renderPostContent = post.results.length ? (
     post.results.map((postData, index) => (
-      <Post key={index} {...postData} setPosts={setPost} postPage />
+      <React.Fragment key={index}>
+        <Post {...postData} setPosts={setPost} postPage />
+        <CommentCreateForm 
+          post={postData.id} 
+          setPost={setPost} 
+          setComments={setComments} 
+          profileImage={profile_image} 
+          profile_id={currentUser?.id} 
+        />
+      </React.Fragment>
     ))
   ) : (
     <p>Loading post...</p>
@@ -70,7 +89,11 @@ function PostPage() {
         </Form>
         <p>Popular profiles for mobile</p>
         {renderPostContent}
-        <Container className={appStyles.Content}>Comments</Container>
+        <Container className={appStyles.Content}>
+          {comments.results.map((comment, index) => (
+            <p key={index}>{comment.content}</p>
+          ))}
+        </Container>
       </Col>
       <Col lg={4} className="d-none d-lg-block p-0 p-lg-2">
         Popular profiles for desktop
