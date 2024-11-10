@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 
 import Asset from "../components/ImageAsset";
 import Upload from "../assets/Logo.png";
-import { axiosReq } from "../api/axiosDefaults";
+import { axiosPrivate } from "../api/axiosDefaults";  // Replaced axiosReq with axiosPrivate
 
 import styles from "../styles/PostCreateEditForm.module.css";
 import appStyles from "../App.module.css";
@@ -46,7 +46,7 @@ function PostCreateForm() {
     formData.append("image", imageInput.current.files[0]);
 
     try {
-      const { data } = await axiosReq.post("/posts/", formData);
+      const { data } = await axiosPrivate.post("/posts/", formData);  // Replaced axiosReq with axiosPrivate
       history.push(`/posts/${data.id}`);
     } catch (error) {
       console.error("Submission error:", error);

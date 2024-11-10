@@ -3,7 +3,7 @@ import { Col, Row, Container, Form, Button } from "react-bootstrap";
 import appStyles from "../App.module.css";
 import searchBarStyles from "../styles/SearchBar.module.css"; 
 import { useParams } from "react-router";
-import { axiosReq } from "../api/axiosDefaults";
+import { axiosPrivate } from "../api/axiosDefaults";  // Use axiosPrivate here
 import Post from "./PostItem";
 import { useInfiniteScroll } from "../utilis/Utilis";
 
@@ -17,7 +17,7 @@ function PostPage() {
   // Fetch posts data using useEffect
   const fetchPost = useCallback(async () => {
     try {
-      const { data } = await axiosReq.get(`/posts/${id}?page=${page}`);
+      const { data } = await axiosPrivate.get(`/posts/${id}?page=${page}`);  // Use axiosPrivate here
       setPost((prevPost) => ({
         results: page === 1 ? [data] : [...prevPost.results, data],
       }));

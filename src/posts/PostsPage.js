@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Col, Row, Container, Spinner, Alert } from "react-bootstrap"; 
 import appStyles from "../App.module.css";
 import { useParams } from "react-router";
-import { axiosReq } from "../api/axiosDefaults";
+import { axiosPrivate } from "../api/axiosDefaults";  // Updated import
 import Post from "./PostItem";
 
 function PostPage() {
@@ -16,7 +16,7 @@ function PostPage() {
     setLoading(true); // Start loading
     setError(null); // Clear previous errors
     try {
-      const [{ data: post }] = await Promise.all([axiosReq.get(`/posts/${id}`)]);
+      const [{ data: post }] = await Promise.all([axiosPrivate.get(`/posts/${id}`)]); // Replaced axiosReq with axiosPrivate
       setPost({ results: [post] });
     } catch (err) {
       setError("Error fetching post. Please try again later.");

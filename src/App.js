@@ -11,6 +11,8 @@ import SignInForm from './pages/auth/SignInForm';
 import PostCreateForm from './posts/PostCreateForm';
 import PostPage from './posts/PostPage';
 import PostsPage from './posts/PostsPage';
+import PostEditForm from './posts/PostEditForm';
+
 
 
 
@@ -48,6 +50,8 @@ function App() {
               <Route exact path="/signup" component={SignUpForm} />
               <Route exact path="/posts/create" component={PostCreateForm} />
               <Route exact path="/posts/:id" component={PostPage} />
+              <Route path="/posts" component={PostsPage} />
+              <Route exact path="/posts/:id/edit" render={() => <PostEditForm />} />
               <Route render={() => <p>Page not found!</p>} />
             </Switch>
           </Container>
