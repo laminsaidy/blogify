@@ -9,90 +9,63 @@ import { useInfiniteScroll } from "../utilis/Utilis";
 import CommentCreateForm from "./comments/CommentCreateForm";
 import { useCurrentUser } from "../context/CurrentUserContext";
 
+
 function PostPage() {
   const { id } = useParams();
   const [post, setPost] = useState({ results: [] });
-  const [query, setQuery] = useState("");
-  const [hasMore, setHasMore] = useState(true); 
-  const [page, setPage] = useState(1); 
+
   const currentUser = useCurrentUser();
   const profile_image = currentUser?.profile_image;
   const [comments, setComments] = useState({ results: [] });
 
-  const fetchPost = useCallback(async () => {
-    try {
-      const { data } = await axiosPrivate.get(`/posts/${id}?page=${page}`);
-      setPost((prevPost) => ({
-        results: page === 1 ? [data] : [...prevPost.results, data],
-      }));
-      setHasMore(data.has_next); 
-    } catch (err) {
-      console.error("Error fetching post:", err);
-    }
-  }, [id, page]);
-
-  const fetchComments = useCallback(async () => {
-    try {
-      const { data } = await axiosPrivate.get(`/posts/${id}/comments`);
-      setComments({ results: data });
-    } catch (err) {
-      console.error("Error fetching comments:", err);
-    }
-  }, [id]);
-
   useEffect(() => {
-    fetchPost();
-    fetchComments();
-  }, [fetchPost, fetchComments]);
+    const handleMount = async () => {
+      try {
+        const [{ data: post }, { data: comments }] = await Promise.all([
+          axiosPrivate.get(`/posts/${id}`),
+          axiosPrivate.get(`/comments/?post=${id}`),
+        ]);
+        setPost({ results: [post] });
+        setComments(comments);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-  useInfiniteScroll(() => {
-    if (hasMore) {
-      setPage((prevPage) => prevPage + 1);
-    }
-  });
-
-  const handleSearch = (event) => {
-    event.preventDefault();
-    console.log("Searching for:", query);
-  };
-
-  const renderPostContent = post.results.length ? (
-    post.results.map((postData, index) => (
-      <React.Fragment key={index}>
-        <Post {...postData} setPosts={setPost} postPage />
-        <CommentCreateForm 
-          post={postData.id} 
-          setPost={setPost} 
-          setComments={setComments} 
-          profileImage={profile_image} 
-          profile_id={currentUser?.id} 
-        />
-      </React.Fragment>
-    ))
-  ) : (
-    <p>Loading post...</p>
-  );
+    handleMount();
+  }, [id]);
 
   return (
     <Row className="h-100">
       <Col className="py-2 p-0 p-lg-2" lg={8}>
-        <Form onSubmit={handleSearch} className={`${searchBarStyles.SearchBar} mb-3`}>
-          <Form.Control
-            type="text"
-            placeholder="Search posts..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <Button type="submit" variant="primary" className="ms-2">
-            Search
-          </Button>
-        </Form>
         <p>Popular profiles for mobile</p>
-        {renderPostContent}
+        <Post {...post.results[0]} setPosts={setPost} postPage />
         <Container className={appStyles.Content}>
-          {comments.results.map((comment, index) => (
-            <p key={index}>{comment.content}</p>
-          ))}
+          {currentUser ? (
+            <CommentCreateForm
+              profile_id={currentUser.profile_id}
+              profileImage={profile_image}
+              post={id}
+              setPost={setPost}
+              setComments={setComments}
+            />
+          ) : comments.results.length ? (
+            "Comments"
+          ) : null}
+          {comments.results.length ? (
+            comments.results.map((comment) => (
+              <Comment
+                key={comment.id}
+                {...comment}
+                setPost={setPost}
+                setComments={setComments}
+              />
+            ))
+          ) : currentUser ? (
+            <span>No comments yet, be the first to comment!</span>
+          ) : (
+            <span>No comments... yet</span>
+          )}
         </Container>
       </Col>
       <Col lg={4} className="d-none d-lg-block p-0 p-lg-2">
