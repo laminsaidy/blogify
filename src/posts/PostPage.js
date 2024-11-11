@@ -24,7 +24,7 @@ function PostPage() {
       setComments((prevComments) => ({
         results: [...prevComments.results, ...data.results],
       }));
-      setHasMore(!!data.next); // Check if there's another page
+      setHasMore(!!data.next); 
     } catch (err) {
       console.log(err);
     }

@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState, useCallback } from 'react';
-import { Route, Switch } from 'react-router-dom'; // Use Switch, not Routes
+import { Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 
 import './api/axiosDefaults';
@@ -11,7 +11,9 @@ import SignInForm from './pages/auth/SignInForm';
 import PostCreateForm from './posts/PostCreateForm';
 import PostPage from './posts/PostPage';
 import PostEditForm from './posts/PostEditForm';
-import PostsPage from './posts/PostsPage'; 
+import PostsPage from './posts/PostsPage';
+import ProfilePage from "./profiles/ProfilePage";
+
 
 // Contexts for current user and the function to set it
 export const CurrentUserContext = createContext(null);
@@ -47,8 +49,9 @@ function App() {
               <Route exact path="/signup" component={SignUpForm} />
               <Route exact path="/posts/create" component={PostCreateForm} />
               <Route exact path="/posts/:id" component={PostPage} />
-              <Route exact path="/posts" component={PostsPage} /> {/* Correct path and element */}
+              <Route exact path="/posts" component={PostsPage} />
               <Route exact path="/posts/:id/edit" render={() => <PostEditForm />} />
+              <Route exact path="/profiles/:id" render={() => <ProfilePage />} />
               <Route render={() => <p>Page not found!</p>} />
             </Switch>
           </Container>
