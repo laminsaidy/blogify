@@ -1,22 +1,35 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Col, Row, Container, Form, Button } from "react-bootstrap";
+import { Col, Row, Container } from "react-bootstrap";
 import appStyles from "../App.module.css";
-import searchBarStyles from "../styles/SearchBar.module.css"; 
 import { useParams } from "react-router";
 import { axiosPrivate } from "../api/axiosDefaults";
 import Post from "./PostItem";
-import { useInfiniteScroll } from "../utilis/Utilis";
+import Comment from "./comments/Comment";
 import CommentCreateForm from "./comments/CommentCreateForm";
 import { useCurrentUser } from "../context/CurrentUserContext";
-
+import { useInfiniteScroll } from "../utilis/Utilis";
 
 function PostPage() {
   const { id } = useParams();
   const [post, setPost] = useState({ results: [] });
-
+  const [comments, setComments] = useState({ results: [] });
+  const [hasMore, setHasMore] = useState(false);
   const currentUser = useCurrentUser();
   const profile_image = currentUser?.profile_image;
-  const [comments, setComments] = useState({ results: [] });
+
+  const fetchComments = useCallback(async () => {
+    try {
+      const { data } = await axiosPrivate.get(`/comments/?post=${id}&page=${comments.results.length / 10 + 1}`);
+      setComments((prevComments) => ({
+        results: [...prevComments.results, ...data.results],
+      }));
+      setHasMore(!!data.next); // Check if there's another page
+    } catch (err) {
+      console.log(err);
+    }
+  }, [id, comments.results.length]);
+
+  useInfiniteScroll(fetchComments, hasMore);
 
   useEffect(() => {
     const handleMount = async () => {
@@ -27,18 +40,17 @@ function PostPage() {
         ]);
         setPost({ results: [post] });
         setComments(comments);
+        setHasMore(!!comments.next);
       } catch (err) {
         console.log(err);
       }
     };
-
     handleMount();
   }, [id]);
 
   return (
     <Row className="h-100">
       <Col className="py-2 p-0 p-lg-2" lg={8}>
-        <p>Popular profiles for mobile</p>
         <Post {...post.results[0]} setPosts={setPost} postPage />
         <Container className={appStyles.Content}>
           {currentUser ? (

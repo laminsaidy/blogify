@@ -1,11 +1,11 @@
 import React from "react";
 import { Media } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Avatar from "../Avatar";
-import MoreDropdown from "../MoreDropdown";
+import Avatar from "../../components/Avatar";
+import { OwnerDropdown } from "../../components/OwnerDropdown";
 import styles from "../../styles/Comment.module.css";
-import { useCurrentUser } from "../../contexts/CurrentUserContext";
-import { axiosRes } from "../../api/axiosDefaults";
+import { useCurrentUser } from "../../context/CurrentUserContext";
+import { axiosPrivate } from "../../api/axiosDefaults";
 
 const Comment = (props) => {
   const {
@@ -24,7 +24,7 @@ const Comment = (props) => {
 
   const handleDelete = async () => {
     try {
-      await axiosRes.delete(`/comments/${id}/`);
+      await axiosPrivate.delete(`/comments/${id}/`);
       setPost((prevPost) => ({
         results: [
           {
@@ -38,7 +38,9 @@ const Comment = (props) => {
         ...prevComments,
         results: prevComments.results.filter((comment) => comment.id !== id),
       }));
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -54,7 +56,7 @@ const Comment = (props) => {
           <p>{content}</p>
         </Media.Body>
         {is_owner && (
-          <MoreDropdown handleEdit={() => {}} handleDelete={handleDelete} />
+          <OwnerDropdown handleEdit={() => {}} handleDelete={handleDelete} />
         )}
       </Media>
     </div>
