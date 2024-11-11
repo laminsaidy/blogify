@@ -4,7 +4,7 @@ import styles from "../styles/PostCreateEditForm.module.css";
 import appStyles from "../App.module.css";
 import btnStyles from "../styles/Button.module.css";
 import { useHistory, useParams } from "react-router";
-import { axiosPrivate } from "../api/axiosDefaults";  // Replaced axiosReq with axiosPrivate
+import { axiosPrivate } from "../api/axiosDefaults";  
 
 const PostEditForm = () => {
   const [formErrors, setFormErrors] = useState({});
@@ -22,7 +22,7 @@ const PostEditForm = () => {
   useEffect(() => {
     const fetchPostDetails = async () => {
       try {
-        const { data } = await axiosPrivate.get(`/posts/${id}/`);  // Replaced axiosReq with axiosPrivate
+        const { data } = await axiosPrivate.get(`/posts/${id}/`);  
         const { title, content, image, is_owner } = data;
 
         if (is_owner) {
@@ -67,7 +67,7 @@ const PostEditForm = () => {
     }
 
     try {
-      await axiosPrivate.put(`/posts/${id}/`, formData);  // Replaced axiosReq with axiosPrivate
+      await axiosPrivate.put(`/posts/${id}/`, formData);  
       history.push(`/posts/${id}`);
     } catch (error) {
       console.error(error);

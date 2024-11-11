@@ -34,11 +34,9 @@ function SignInForm() {
     event.preventDefault();
 
     try {
-      // Make sure the API URL is correct here
       const { data } = await axios.post("http://localhost:8000/dj-rest-auth/login/", signInData);
-      // Assuming 'data.user' is returned with 'username'
       setCurrentUser(data.user);
-      history.push("/");  // Redirect after login
+      history.push("/");  
     } catch (err) {
       setErrors(err.response?.data);
     }

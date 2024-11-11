@@ -2,10 +2,10 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Col, Row, Container, Spinner, Alert } from "react-bootstrap"; 
 import appStyles from "../App.module.css";
 import { useParams } from "react-router";
-import { axiosPrivate } from "../api/axiosDefaults";  // Updated import
+import { axiosPrivate } from "../api/axiosDefaults"; 
 import Post from "./PostItem";
 
-function PostPage() {
+function PostsPage() {
   const { id } = useParams();
   const [post, setPost] = useState({ results: [] });
   const [loading, setLoading] = useState(true); 
@@ -13,10 +13,10 @@ function PostPage() {
 
   // Fetch the post data using useEffect
   const fetchPost = useCallback(async () => {
-    setLoading(true); // Start loading
-    setError(null); // Clear previous errors
+    setLoading(true); 
+    setError(null); 
     try {
-      const [{ data: post }] = await Promise.all([axiosPrivate.get(`/posts/${id}`)]); // Replaced axiosReq with axiosPrivate
+      const [{ data: post }] = await Promise.all([axiosPrivate.get(`/posts/${id}`)]); 
       setPost({ results: [post] });
     } catch (err) {
       setError("Error fetching post. Please try again later.");
@@ -67,4 +67,4 @@ function PostPage() {
   );
 }
 
-export default PostPage;
+export default PostsPage;

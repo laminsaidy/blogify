@@ -16,6 +16,7 @@ import PostEditForm from './posts/PostEditForm';
 
 
 
+
 // Contexts for current user and the function to set it
 export const CurrentUserContext = createContext(null);
 export const SetCurrentUserContext = createContext(null);
@@ -49,10 +50,10 @@ function App() {
               <Route exact path="/signin" component={SignInForm} />
               <Route exact path="/signup" component={SignUpForm} />
               <Route exact path="/posts/create" component={PostCreateForm} />
-              <Route exact path="/posts/:id" component={PostPage} />
-              <Route path="/posts" component={PostsPage} />
+              <Route exact path="/posts/:id" render={() => <PostPage />} />
               <Route exact path="/posts/:id/edit" render={() => <PostEditForm />} />
               <Route render={() => <p>Page not found!</p>} />
+
             </Switch>
           </Container>
         </div>

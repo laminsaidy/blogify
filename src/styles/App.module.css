@@ -80,3 +80,126 @@
   *::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
+
+
+  .pb-5 {
+    padding-bottom: 3rem;
+  }
+  
+  /* Form Title */
+  h4 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .ProfileFormFont {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .ProfileFormFont:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+
+
+  /* Image upload section */
+  input[type="file"] {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    border-radius: 4px;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  input[type="file"]:focus {
+    border-color: #007bff;
+  }
+  
+  .alert {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  
+  button[type="button"] {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+  }
+  
+  button[type="button"]:hover {
+    background-color: #e2e6ea;
+  }
+  
+  button.mt-3 {
+    margin-top: 1rem;
+  }
+  
+  .row.justify-content-center {
+    display: flex;
+    justify-content: center;
+  }
+  
+
+
+  /* Style for popular profiles section */
+  .Content {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .Content p {
+    font-size: 1rem;
+    color: #555;
+    margin: 0.5rem 0;
+  }
+  
+  .Asset {
+    text-align: center;
+  }
+  
+  img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .ProfileFormFont {
+      font-size: 0.9rem;
+    }
+    
+    .row.justify-content-center {
+      margin-top: 1rem;
+    }
+  
+    .Content {
+      font-size: 1rem;
+    }
+  }

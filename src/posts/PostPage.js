@@ -1,13 +1,14 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Col, Row, Container } from "react-bootstrap";
-import appStyles from "../App.module.css";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { axiosPrivate } from "../api/axiosDefaults";
-import Post from "./PostItem";
-import Comment from "./comments/Comment";
-import CommentCreateForm from "./comments/CommentCreateForm";
+import appStyles from "../App.module.css";
+import Post from "./PostItem";  
+import Comment from "./comments/Comment";  
+import CommentCreateForm from "./comments/CommentCreateForm";  
 import { useCurrentUser } from "../context/CurrentUserContext";
-import { useInfiniteScroll } from "../utilis/Utilis";
+import { useInfiniteScroll } from "../utilis/Utilis"; 
+import PopularProfiles from '../profiles/PopularProfiles';
 
 function PostPage() {
   const { id } = useParams();
@@ -52,6 +53,7 @@ function PostPage() {
     <Row className="h-100">
       <Col className="py-2 p-0 p-lg-2" lg={8}>
         <Post {...post.results[0]} setPosts={setPost} postPage />
+        
         <Container className={appStyles.Content}>
           {currentUser ? (
             <CommentCreateForm
@@ -64,6 +66,7 @@ function PostPage() {
           ) : comments.results.length ? (
             "Comments"
           ) : null}
+
           {comments.results.length ? (
             comments.results.map((comment) => (
               <Comment
@@ -80,8 +83,9 @@ function PostPage() {
           )}
         </Container>
       </Col>
+      
       <Col lg={4} className="d-none d-lg-block p-0 p-lg-2">
-        Popular profiles for desktop
+        <PopularProfiles mobile={false} />
       </Col>
     </Row>
   );

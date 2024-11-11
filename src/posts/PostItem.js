@@ -3,7 +3,7 @@ import { Card, Media, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { useCurrentUser } from "../context/CurrentUserContext";
 import Avatar from "../components/Avatar";
-import { axiosPublic } from "../api/axiosDefaults";  // Updated import
+import { axiosPublic } from "../api/axiosDefaults"; 
 import { OwnerDropdown } from "../components/OwnerDropdown";
 import postStyles from "../styles/PostItem.module.css";
 
@@ -24,7 +24,7 @@ const PostItem = ({
   // Handle post deletion
   const onDelete = async () => {
     try {
-      await axiosPublic.delete(`/posts/${id}/`);  // Replaced axiosRes with axiosPublic
+      await axiosPublic.delete(`/posts/${id}/`);  
       history.goBack();
     } catch (err) {
       console.error("Error deleting post:", err);
@@ -34,7 +34,7 @@ const PostItem = ({
   // Handle liking the post
   const onLike = async () => {
     try {
-      const { data } = await axiosPublic.post("/likes/", { post: id });  // Replaced axiosRes with axiosPublic
+      const { data } = await axiosPublic.post("/likes/", { post: id }); 
       updatePosts((prevState) => ({
         ...prevState,
         results: prevState.results.map((post) => 
@@ -51,7 +51,7 @@ const PostItem = ({
   // Handle unliking the post
   const onUnlike = async () => {
     try {
-      await axiosPublic.delete(`/likes/${like_id}/`);  // Replaced axiosRes with axiosPublic
+      await axiosPublic.delete(`/likes/${like_id}/`);  
       updatePosts((prevState) => ({
         ...prevState,
         results: prevState.results.map((post) => 

@@ -124,7 +124,7 @@ const SignUpForm = () => {
       >
         <Image
           className={`${appStyles.FillerImage}`}
-          src={signUpImage}  // Use the imported image here
+          src={signUpImage}  
           alt="Sign Up Illustration"
         />
       </Col>

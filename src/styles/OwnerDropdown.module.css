@@ -1,14 +1,14 @@
 .DropdownItem {
     display: inline-flex;
-    max-width: 60%; /* Increased width slightly */
-    padding: 2px 5px; /* Added subtle padding */
-    justify-content: center; /* Centered content for better alignment */
+    max-width: 60%; 
+    padding: 2px 5px; 
+    justify-content: center; 
   }
   
-  /* Renamed and modified Absolute for specificity */
+  
   .AbsolutePosition {
     position: absolute;
-    top: 0; /* Changed position for a different layout */
+    top: 0; 
     right: 0;
-    z-index: 100; /* Slightly increased z-index */
+    z-index: 100; 
   }
