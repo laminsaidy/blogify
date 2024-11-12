@@ -13,7 +13,6 @@ import PostPage from './posts/PostPage';
 import PostEditForm from './posts/PostEditForm';
 import PostsPage from './posts/PostsPage';
 import ProfilePage from "./profiles/ProfilePage";
-
 import ProfileUsernameForm from "./profiles/ProfileUsernameForm";
 import ProfileUsernamePassword from "./profiles/ProfileUsernamePassword";
 import ProfileEditForm from "./profiles/ProfileEditForm";
@@ -28,8 +27,22 @@ function App() {
   // Fetches the current user data on mount
   const fetchCurrentUser = useCallback(async () => {
     try {
-      const { data } = await axios.get('/dj-rest-auth/user/');
+      const apiUrl = process.env.REACT_APP_API_URL;  // Use the API URL from env
+      console.log(apiUrl);  // Logs your API URL to check if it's correct
+
+      // Fetch current user data
+      const { data } = await axios.get(`${apiUrl}/dj-rest-auth/user/`);  // Use the apiUrl
       setCurrentUser(data);
+
+      // Example: Fetching the auth token (or any other endpoint)
+      axios.get(`${apiUrl}/auth/token/`)  
+        .then(response => {
+          console.log('Auth token response:', response.data);  // Handle token or other response
+        })
+        .catch(error => {
+          console.error('There was an error fetching the auth token:', error);  // Handle error
+        });
+
     } catch (error) {
       console.error('Error fetching current user:', error);
     }
