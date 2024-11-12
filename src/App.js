@@ -14,6 +14,9 @@ import PostEditForm from './posts/PostEditForm';
 import PostsPage from './posts/PostsPage';
 import ProfilePage from "./profiles/ProfilePage";
 
+import ProfileUsernameForm from "./profiles/ProfileUsernameForm";
+import ProfileUsernamePassword from "./profiles/ProfileUsernamePassword";
+import ProfileEditForm from "./profiles/ProfileEditForm";
 
 // Contexts for current user and the function to set it
 export const CurrentUserContext = createContext(null);
@@ -44,6 +47,21 @@ function App() {
           <NavBar />
           <Container className={styles.Main}>
             <Switch>
+              <Route
+                exact
+                path="/profiles/:id/edit/username"
+                render={() => <ProfileUsernameForm />}
+              />
+              <Route
+                exact
+                path="/profiles/:id/edit/password"
+                render={() => <ProfileUsernamePassword />}
+              />
+              <Route
+                exact
+                path="/profiles/:id/edit"
+                render={() => <ProfileEditForm />}
+              />
               <Route exact path="/" render={() => <h1>Home Page</h1>} />
               <Route exact path="/signin" component={SignInForm} />
               <Route exact path="/signup" component={SignUpForm} />
@@ -52,6 +70,7 @@ function App() {
               <Route exact path="/posts" component={PostsPage} />
               <Route exact path="/posts/:id/edit" render={() => <PostEditForm />} />
               <Route exact path="/profiles/:id" render={() => <ProfilePage />} />
+
               <Route render={() => <p>Page not found!</p>} />
             </Switch>
           </Container>
