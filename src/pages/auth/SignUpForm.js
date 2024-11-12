@@ -1,33 +1,39 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { useHistory, Link } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import Alert from "react-bootstrap/Alert";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Image from "react-bootstrap/Image";
-import Container from "react-bootstrap/Container";
-import signUpImage from "../../images/Ooopsy_enhanced.jpg";
+import { Link, useHistory } from "react-router-dom";
 
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
+import signUpImage from "../../images/BloGeekFy_enhanced.jpg";  
+
+import {
+  Form,
+  Button,
+  Image,
+  Col,
+  Row,
+  Container,
+  Alert,
+} from "react-bootstrap";
+import axios from "axios";
+import { useUserRedirect } from "../../hooks/useUserRedirect"; 
 
 const SignUpForm = () => {
-  const [formData, setFormData] = useState({
+  useUserRedirect("loggedIn"); 
+  const [signUpData, setSignUpData] = useState({
     username: "",
     password1: "",
     password2: "",
   });
-  const { username, password1, password2 } = formData;
+  const { username, password1, password2 } = signUpData;
 
   const [errors, setErrors] = useState({});
+
   const history = useHistory();
 
   const handleChange = (event) => {
-    setFormData({
-      ...formData,
+    setSignUpData({
+      ...signUpData,
       [event.target.name]: event.target.value,
     });
   };
@@ -35,8 +41,8 @@ const SignUpForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post("/dj-rest-auth/registration/", formData);
-      history.push("/sign-in");
+      await axios.post("/dj-rest-auth/registration/", signUpData);
+      history.push("/signin");
     } catch (err) {
       setErrors(err.response?.data);
     }
@@ -44,23 +50,24 @@ const SignUpForm = () => {
 
   return (
     <Row className={styles.Row}>
-      <Col className="my-auto p-0 p-md-2" md={6}>
+      <Col className="my-auto py-2 p-md-2" md={6}>
         <Container className={`${appStyles.Content} p-4 `}>
           <h1 className={styles.Header}>Sign Up</h1>
+
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="username">
               <Form.Label className="d-none">Username</Form.Label>
               <Form.Control
+                className={styles.Input}
                 type="text"
                 placeholder="Username"
                 name="username"
-                className={styles.Input}
                 value={username}
                 onChange={handleChange}
               />
             </Form.Group>
             {errors.username?.map((message, idx) => (
-              <Alert key={idx} variant="warning">
+              <Alert variant="warning" key={idx}>
                 {message}
               </Alert>
             ))}
@@ -68,10 +75,10 @@ const SignUpForm = () => {
             <Form.Group controlId="password1">
               <Form.Label className="d-none">Password</Form.Label>
               <Form.Control
+                className={styles.Input}
                 type="password"
                 placeholder="Password"
                 name="password1"
-                className={styles.Input}
                 value={password1}
                 onChange={handleChange}
               />
@@ -85,10 +92,10 @@ const SignUpForm = () => {
             <Form.Group controlId="password2">
               <Form.Label className="d-none">Confirm Password</Form.Label>
               <Form.Control
+                className={styles.Input}
                 type="password"
                 placeholder="Confirm Password"
                 name="password2"
-                className={styles.Input}
                 value={password2}
                 onChange={handleChange}
               />
@@ -112,20 +119,21 @@ const SignUpForm = () => {
             ))}
           </Form>
         </Container>
+
         <Container className={`mt-3 ${appStyles.Content}`}>
-          <Link className={styles.Link} to="/sign-in">
-            Already have an account? <span>Sign in now!</span>
+          <Link className={styles.Link} to="/signin">
+            Already have an account? <span>Sign in</span>
           </Link>
         </Container>
       </Col>
       <Col
         md={6}
-        className={`my-auto d-none d-md-block p-2 ${styles.SignInCol}`}
+        className={`my-auto d-none d-md-block p-2 ${styles.SignUpCol}`}
       >
         <Image
           className={`${appStyles.FillerImage}`}
           src={signUpImage}  
-          alt="Sign Up Illustration"
+          alt="Hero Image"
         />
       </Col>
     </Row>

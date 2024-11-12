@@ -3,9 +3,11 @@
   background-color: #f8f8f8a7;
   min-height: 100vh;
 }
+
 .Main {
   padding-top: 81px;
 }
+
 * {
   box-sizing: border-box;
 }
@@ -13,4 +15,13 @@
 a {
   transition: color ease-in-out 0.3s;
 }
- 
+
+.Row {
+  height: calc(100vh - 81px);
+}
+
+.FillerImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
